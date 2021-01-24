@@ -1,0 +1,3 @@
+#!/bin/bash
+COW_PATH=/usr/share/cowsay/cows
+fortune | command cowsay -f $(ls $COW_PATH | sort -R | tail -n 1) 

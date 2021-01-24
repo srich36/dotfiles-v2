@@ -72,26 +72,17 @@ source $ZSH/oh-my-zsh.sh
 # export lang=en_us.utf-8
 
 # preferred editor for local and remote sessions
-# if [[ -n $ssh_connection ]]; then
-#   export editor='vim'
-# else
-#   export editor='mvim'
-# fi
+if [[ -n $ssh_connection ]]; then
+ export editor='vim'
+else
+ export editor='mvim'
+fi
 
 # compilation flags
 # export archflags="-arch x86_64"
 
-# ssh
-# export ssh_key_path="~/.ssh/rsa_id"
-#cowsay don\'t even try typing on this terminal you piece of shit developer 
-# set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the zsh_custom folder.
-# for a full list of active aliases, run `alias`.
-#
-# example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+# Load secrets
+source "$HOME/.secretsrc"
 
 alias gtree='git log --graph --abbrev-commit --decorate --date=relative --format=format:'\''%c(bold blue)%h%c(reset) - %c(bold green)(%ar)%c(reset) %c(white)%s%c(reset) %c(dim white)- %an%c(reset)%c(bold yellow)%d%c(reset)'\'' --all'
 alias matlab='matlab &'
@@ -102,20 +93,9 @@ alias cal="cal -a 6"
 export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
 eval "$(rbenv init -)" 
-export food2fork_key=b2adc7aa3441a0f1355f5fe2e118db21
-export username=crowdshout
-export password=crowdshout
-
-export cs_api_prod_db_pwd=test1
-export cs_api_local_db_pwd=test2
-export cs_api_secret_key_base=test3
-export cs_email_username=team@crowdshout.tech
-export cs_email_password=test4
-export cs_api_docs_passphrase=jyoqrw8y4iwx
 
 export matlab_log_dir="/var/log/matlab"
 export PATH="/usr/local/cuda-10.1/bin:/usr/local/cuda-10.1/nsightcompute-2019.1:$PATH:/home/sean/scripts"
-
 
 
 #thon env variables
@@ -158,9 +138,7 @@ alias dockercleani='printf "\n>>> deleting untagged images\n\n" && docker rmi $(
 # delete all stopped containers and untagged images.
 alias dockerclean='dockercleanc || true && dockercleani'
 alias dcdv="docker-compose down -v"
-export mailgun_api="ff54897b5b0bcf72d654bb25313485cb-65b08458-e6ec3974"
 alias til="cd ~/cs/til"
-
 
 
 ## git aliases
@@ -195,12 +173,6 @@ fd() {
 fh() {
   eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
 }
-
-
-
-
-
-
 
 set editing-mode vi
 set keymap vi

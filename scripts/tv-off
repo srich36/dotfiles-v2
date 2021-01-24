@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+xrandr --output HDMI-1-2 --off
+i3-msg restart
+source ./headphone_sound.sh

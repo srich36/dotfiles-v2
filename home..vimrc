@@ -119,6 +119,8 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'jiangmiao/auto-pairs'
 " Comment with gc
 Plug 'tpope/vim-commentary'
+" Automatic linting
+Plug 'w0rp/ale'
 call plug#end()
 
 " Material Dark Syntax highlighting
@@ -203,6 +205,12 @@ let g:gutentags_ctags_tagfile=".git/tags"
 " automatically switches to cae sensitive (can see current value with :set
 " ignorecase? for any setting)
 set incsearch
-:set ignorecase
+set ignorecase
 set smartcase
+
+" Column width indicator
+set colorcolumn=80
+
+" ALE fixers
+let g:ale_fixers = {'python': ['autopep8'], 'javascript': ['eslint'],}
 

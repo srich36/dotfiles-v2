@@ -1,5 +1,12 @@
 syntax on
+
+" Custom key-remappings
 :imap jj <Esc>
+" Switch windows
+nnoremap <C-J> <C-W>j
+nnoremap <C-K> <C-W>k
+nnoremap <C-L> <C-W>l
+nnoremap <C-H> <C-W>h
 
 " To prevent scrolling being sent to the terminal, not the vim buffer in tmux
 set mouse=a

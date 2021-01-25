@@ -4,7 +4,7 @@ home_dir_basename=$(basename "$HOME")
 default_parent_dir="home"
 
 DOTFILES=("$HOME/.config/i3/config" "$HOME/.zshrc" "$HOME/.config/polybar/config"
-  "$HOME/.config/compton.conf" "$HOME/.config/polybar/launch.sh" "$HOME/.tmux.conf" "$HOME/scripts")
+  "$HOME/.config/compton.conf" "$HOME/.config/polybar/launch.sh" "$HOME/.tmux.conf" "$HOME/scripts" "$HOME/.vimrc")
 for dotfile in "${DOTFILES[@]}"
 do
   if [[ -d "$dotfile" ]]; then

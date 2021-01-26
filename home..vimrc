@@ -86,7 +86,6 @@ set backupdir=~/vimtmp//,.
 set directory=~/vimtmp//,.
 set mouse=a
 
-:set guioptions+=a
 
 set clipboard=unnamed
 
@@ -128,6 +127,8 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-commentary'
 " Automatic linting
 Plug 'w0rp/ale'
+" Toggle cursor to blinking I when in insert mode, underline in replace
+Plug 'jszakmeister/vim-togglecursor'
 call plug#end()
 
 " Material Dark Syntax highlighting
@@ -216,8 +217,20 @@ set ignorecase
 set smartcase
 
 " Column width indicator
-set colorcolumn=80
+set colorcolumn=120
 
 " ALE fixers
 let g:ale_fixers = {'python': ['autopep8'], 'javascript': ['eslint'],}
+let g:indentLine_fileTypeExclude = ['markdown']
+let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+
+:set guioptions+=a
+if has("autocmd")
+  au InsertEnter * silent execute "!gconftool-2 --type string --set /apps/gnome-terminal/profiles/Default/cursor_shape ibeam"
+  au InsertLeave * silent execute "!gconftool-2 --type string --set /apps/gnome-terminal/profiles/Default/cursor_shape block"
+  au VimLeave * silent execute "!gconftool-2 --type string --set /apps/gnome-terminal/profiles/Default/cursor_shape ibeam"
+endif
+
 

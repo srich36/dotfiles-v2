@@ -158,6 +158,9 @@ alias otmux="vi $HOME/.tmux.conf"
 alias stmux="tmux source $HOME/.tmux.conf"
 alias ovim="vi $HOME/.vimrc"
 
+## Directory aliases
+alias dotfiles="cd $HOME/cs/dotfiles"
+
 
 export FZF_DEFAULT_OPTS='--bind ctrl-a:select-all,ctrl-d:deselect-all,ctrl-t:toggle-all'
 # FZF functions

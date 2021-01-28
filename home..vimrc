@@ -8,6 +8,10 @@ nnoremap <C-K> <C-W>k
 nnoremap <C-L> <C-W>l
 nnoremap <C-H> <C-W>h
 
+" Map leader to space
+nnoremap <SPACE> <Nop>
+let mapleader=" "
+
 " To prevent scrolling being sent to the terminal, not the vim buffer in tmux
 set mouse=a
 
@@ -76,6 +80,7 @@ imap JJ <Esc>
 nnoremap Y y$
 
 set relativenumber
+set number
 
 
 set virtualedit=onemore
@@ -120,7 +125,7 @@ Plug 'junegunn/fzf.vim'
 " Rename tabs
 Plug 'gcmt/taboo.vim'
 " Managing tag file - requires ctags install for indexing files
-Plug 'ludovicchabant/vim-gutentags'
+" Plug 'ludovicchabant/vim-gutentags'
 " Auto opening and closing of tags
 Plug 'jiangmiao/auto-pairs'
 " Comment with gc
@@ -129,6 +134,8 @@ Plug 'tpope/vim-commentary'
 Plug 'w0rp/ale'
 " Toggle cursor to blinking I when in insert mode, underline in replace
 Plug 'jszakmeister/vim-togglecursor'
+" Buf integration with ALE (protobuf linting/building)
+Plug 'bufbuild/vim-buf'
 call plug#end()
 
 " Material Dark Syntax highlighting
@@ -219,18 +226,38 @@ set smartcase
 " Column width indicator
 set colorcolumn=120
 
-" ALE fixers
+" ALE CONFIGURATION "
+"
+"
+"" ALE fixers
 let g:ale_fixers = {'python': ['autopep8'], 'javascript': ['eslint'],}
 let g:indentLine_fileTypeExclude = ['markdown']
-let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
-:set guioptions+=a
-if has("autocmd")
-  au InsertEnter * silent execute "!gconftool-2 --type string --set /apps/gnome-terminal/profiles/Default/cursor_shape ibeam"
-  au InsertLeave * silent execute "!gconftool-2 --type string --set /apps/gnome-terminal/profiles/Default/cursor_shape block"
-  au VimLeave * silent execute "!gconftool-2 --type string --set /apps/gnome-terminal/profiles/Default/cursor_shape ibeam"
+
+" Buf linting
+" let g:ale_lint_on_text_changed = 'never'
+let g:ale_linters_explicit = 1
+let g:ale_linters = {
+\   'proto': ['buf-lint',],
+\   'python': ['pyls',],
+\   'javascript': ['eslint', 'tsserver'],
+\}
+set undodir=~/vimtmp/undo
+
+if executable('pyls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': {server_info->['pyls']},
+        \ 'whitelist': ['python'],
+        \ })
 endif
+let g:ale_completion_enabled = 1
 
-
+" ALE Keybindings
+nmap <silent> <leader>aj :ALENextWrap<cr>
+nmap <silent> <leader>ak :ALEPreviousWrap<cr>
+nmap <silent> <C-]> <Plug>(ale_go_to_definition)
+nmap <silent> <F12> <Plug>(ale_find_references)
+"
+"
+" ALE CONFIGURATION "

@@ -233,7 +233,6 @@ set colorcolumn=120
 let g:ale_fixers = {'python': ['autopep8'], 'javascript': ['eslint'],}
 let g:indentLine_fileTypeExclude = ['markdown']
 
-
 " Buf linting
 " let g:ale_lint_on_text_changed = 'never'
 let g:ale_linters_explicit = 1
@@ -261,3 +260,6 @@ nmap <silent> <F12> <Plug>(ale_find_references)
 "
 "
 " ALE CONFIGURATION "
+
+filetype plugin indent on
+:set smartindent

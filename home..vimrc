@@ -3,6 +3,9 @@ syntax on
 " Custom key-remappings
 :imap jj <Esc>
 " Switch windows
+"
+" Map leader to space
+nnoremap <C-J> <Nop>
 nnoremap <C-J> <C-W>j
 nnoremap <C-K> <C-W>k
 nnoremap <C-L> <C-W>l
@@ -136,6 +139,14 @@ Plug 'w0rp/ale'
 Plug 'jszakmeister/vim-togglecursor'
 " Buf integration with ALE (protobuf linting/building)
 Plug 'bufbuild/vim-buf'
+" Convert between camel, and mixed, and all other cases
+Plug 'tpope/vim-abolish'
+" Plugin commands can't be repeated with '.'. This plugin enables that
+Plug 'tpope/vim-repeat'
+" Pair of keymappings (e.g. [q and ]q for navigating the quickfix list)
+Plug 'tpope/vim-unimpaired'
+" Grep to populate the quickfix list
+Plug 'mhinz/vim-grepper'
 call plug#end()
 
 " Material Dark Syntax highlighting
@@ -207,11 +218,6 @@ set wildmode=longest,list,full
 " Vim markdown preview
 filetype plugin on
 
-" Show when tags are being generated
-set statusline+=%{gutentags#statusline()}
-let g:gutentags_ctags_exclude = ["*.min.js", "*.min.css", "build", "vendor", ".git", "node_modules", "*.vim/bundle/*"]
-let g:gutentags_ctags_tagfile=".git/tags"
-
 " Very magic searches
 :nnoremap / /\v
 :cnoremap %s/ %s/\v
@@ -226,6 +232,8 @@ set smartcase
 " Column width indicator
 set colorcolumn=120
 
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
+
 " ALE CONFIGURATION "
 "
 "
@@ -233,8 +241,8 @@ set colorcolumn=120
 let g:ale_fixers = {'python': ['autopep8'], 'javascript': ['eslint'],}
 let g:indentLine_fileTypeExclude = ['markdown']
 
+
 " Buf linting
-" let g:ale_lint_on_text_changed = 'never'
 let g:ale_linters_explicit = 1
 let g:ale_linters = {
 \   'proto': ['buf-lint',],
@@ -250,7 +258,14 @@ if executable('pyls')
         \ 'whitelist': ['python'],
         \ })
 endif
-let g:ale_completion_enabled = 1
+
+" let g:ale_completion_enabled = 1
+let g:ale_sign_error = '✘'
+let g:ale_sign_warning = '⚠'
+let g:ale_completion_autoimport = 1
+
+highlight ALEErrorSign ctermbg=NONE ctermfg=DarkRed
+highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
 
 " ALE Keybindings
 nmap <silent> <leader>aj :ALENextWrap<cr>
@@ -261,5 +276,25 @@ nmap <silent> <F12> <Plug>(ale_find_references)
 "
 " ALE CONFIGURATION "
 
-filetype plugin indent on
-:set smartindent
+
+" The Silver Searcher - must install ag for this to work
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
+
+" Search for word under the cursor with a motion
+nmap gs  <plug>(GrepperOperator)
+xmap gs  <plug>(GrepperOperator)
+
+" Run Python script with <F9>
+autocmd FileType python map <buffer> <F9> :w<CR>:exec '!python3' shellescape(@%, 1)<CR>
+autocmd FileType python imap <buffer> <F9> <esc>:w<CR>:exec '!python3' shellescape(@%, 1)<CR>
+
+" nmap is normal mode map
